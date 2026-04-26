@@ -6,6 +6,9 @@
 !setup.sh
 !AGENTS.md
 !config.toml
+!rules/
+/rules/*
+!rules/default.rules
 !skills/
 
 skills/*
@@ -28,7 +31,6 @@ cache/
 log/
 memories/
 plugins/
-rules/
 sessions/
 shell_snapshots/
 tmp/

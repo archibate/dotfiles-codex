@@ -20,6 +20,7 @@ The setup script backs up existing `config.toml` and `AGENTS.md` before replacin
 
 - `config.toml` - Codex model, project trust, plugin, and provider configuration
 - `AGENTS.md` - global Codex behavior and coding preferences
+- `rules/default.rules` - narrowly scoped command approval rules for common safe workflows
 - `skills/archibate/` - curated portable skills migrated from the Claude configuration
 - `setup.sh` - installer for applying this repo to an existing Codex home
 
