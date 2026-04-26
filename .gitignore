@@ -9,6 +9,8 @@
 !skills/
 
 skills/*
+!skills/agent-browser/
+!skills/agent-browser/**
 !skills/algorithmic-art/
 !skills/algorithmic-art/**
 !skills/anti-defensive/
