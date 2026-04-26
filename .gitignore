@@ -12,6 +12,8 @@
 !skills/
 
 /skills/*
+!/agents/
+!/agents/**
 !/skills/archibate/
 !/skills/archibate/**
 

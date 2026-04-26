@@ -19,7 +19,7 @@ Infer intent, scope, and review mode from what the user said. No formal argument
 
 ### 1. Launch Review
 
-Determine scope and launch the appropriate agent(s). Tell the agent the target
+Determine scope and invoke the appropriate agent(s). Tell the agent the target
 (file paths or `"git diff"`). For "full review", launch all three agents in
 parallel.
 
