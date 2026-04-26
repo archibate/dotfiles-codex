@@ -35,10 +35,6 @@ skills/*
 !skills/pdf/**
 !skills/pptx/
 !skills/pptx/**
-!skills/preflight-check/
-!skills/preflight-check/**
-!skills/pueue/
-!skills/pueue/**
 !skills/read-url/
 !skills/read-url/**
 !skills/remotion/
