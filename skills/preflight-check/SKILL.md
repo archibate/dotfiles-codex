@@ -6,17 +6,6 @@ description: >
   builds/benchmarks/renders/training jobs, large-scale scrapes or scripted browser runs,
   spawning 2+ parallel subagents, full-repo test runs, or any Bash call with
   `run_in_background=true` whose runtime is uncertain.
-allowed-tools:
-  - Bash(free:*)
-  - Bash(df:*)
-  - Bash(nproc:*)
-  - Bash(nvidia-smi:*)
-  - Bash(ps aux:*)
-  - Bash(pueue status:*)
-  - Bash(*resource_snapshot*:*)
-  - Read
-  - Grep
-compatibility: Claude Code
 ---
 
 # Preflight Check

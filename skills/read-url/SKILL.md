@@ -6,22 +6,6 @@ description: >
   papers, or when the user says "read this page", "what does this link say",
   provides a URL to read, curl returns noisy HTML, or WebFetch returns
   truncated, summarized, or refused results.
-allowed-tools:
-  - Bash(npx defuddle*:*)
-  - Bash(defuddle*:*)
-  - Bash(curl:*)
-  - Bash(jq:*)
-  - Bash(rg:*)
-  - Bash(npm view:*)
-  - Bash(gh repo view:*)
-  - Bash(gh gist view:*)
-  - Bash(gh issue view:*)
-  - Bash(gh pr view:*)
-  - Bash(yt-dlp:*)
-  - Bash(instaloader:*)
-  - Bash(*html-select*:*)
-  - Bash(*html-unescape*:*)
-  - WebFetch
 ---
 
 # Read URL

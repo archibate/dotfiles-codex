@@ -6,21 +6,6 @@ description: >
   modification or large multi-file edits — or when the user says "review",
   "review changes", "any bugs?", "review AI slop", "clean up AI code",
   "review docs", "code review".
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - Edit
-  - Write
-  - Bash(git diff:*)
-  - Bash(git status:*)
-  - Bash(git log:*)
-  - Bash(git show:*)
-  - TaskCreate
-  - TaskUpdate
-  - TaskGet
-  - TaskList
-  - Agent
 ---
 
 # Review

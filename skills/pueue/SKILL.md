@@ -5,19 +5,6 @@ description: >
   This skill MUST be used before using pueue to run any long-running task (>2 min),
   computation-intensive task, or background task — or when the user says
   "use pueue" or "run in background". This is a process gate, not a reference doc.
-allowed-tools:
-  - Bash(pueue:*)
-  - Bash(*run_in_pueue*:*)
-  - Bash(*list_pueue*:*)
-  - Read
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: bash ~/.claude/skills/pueue/hooks/no-sleep-pueue.sh
-          timeout: 5
-compatibility: Claude Code
 ---
 
 # Pueue - Background Task Manager
