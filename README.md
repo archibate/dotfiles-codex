@@ -14,13 +14,13 @@ If `~/.codex` already exists, clone elsewhere and run:
 bash setup.sh
 ```
 
-The setup script backs up existing `config.toml` and `AGENTS.md` before replacing them, then copies tracked skills into `~/.codex/skills`.
+The setup script backs up existing `config.toml` and `AGENTS.md` before replacing them, then installs tracked skills from `skills/archibate/<name>` into Codex's direct `~/.codex/skills/<name>` runtime layout.
 
 ## What's Included
 
 - `config.toml` - Codex model, project trust, plugin, and provider configuration
 - `AGENTS.md` - global Codex behavior and coding preferences
-- `skills/` - curated portable skills migrated from the Claude configuration
+- `skills/archibate/` - curated portable skills migrated from the Claude configuration
 - `setup.sh` - installer for applying this repo to an existing Codex home
 
 ## What's Not Tracked

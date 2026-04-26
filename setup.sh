@@ -25,7 +25,7 @@ install_file() {
 
 install_skill() {
   local name="$1"
-  local src="$repo_dir/skills/$name"
+  local src="$repo_dir/skills/archibate/$name"
   local dst="$codex_home/skills/$name"
 
   [[ -d "$src" ]] || return 0
@@ -42,10 +42,9 @@ install_skill() {
 install_file "config.toml"
 install_file "AGENTS.md"
 
-for skill in "$repo_dir"/skills/*; do
+for skill in "$repo_dir"/skills/archibate/*; do
   [[ -d "$skill" ]] || continue
   name="$(basename "$skill")"
-  [[ "$name" == ".system" ]] && continue
   install_skill "$name"
 done
 
