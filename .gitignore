@@ -1,41 +1,41 @@
 # Track only portable Codex dotfiles and curated user skills.
 *
 
-!.gitignore
-!README.md
-!setup.sh
-!AGENTS.md
-!config.toml
-!rules/
+!/.gitignore
+!/README.md
+!/setup.sh
+!/AGENTS.md
+!/config.toml
+!/rules/
 /rules/*
 !rules/default.rules
 !skills/
 
-skills/*
-!skills/archibate/
-!skills/archibate/**
+/skills/*
+!/skills/archibate/
+!/skills/archibate/**
 
 # Explicit local/runtime exclusions for clarity.
-.codex
-.personality_migration
-auth.json
-auth.json.bak
-history.jsonl
-installation_id
-models_cache.json
-session_index.jsonl
-version.json
-state_*.sqlite*
-logs_*.sqlite*
-cache/
-log/
-memories/
-plugins/
-sessions/
-shell_snapshots/
-tmp/
-.tmp/
-skills/.system/
+/.codex
+/.personality_migration
+/auth.json
+/auth.json.bak
+/history.jsonl
+/installation_id
+/models_cache.json
+/session_index.jsonl
+/version.json
+/state_*.sqlite*
+/logs_*.sqlite*
+/cache/
+/log/
+/memories/
+/plugins/
+/sessions/
+/shell_snapshots/
+/tmp/
+/.tmp/
+/skills/.system/
 
 **/.DS_Store
 **/__pycache__/
