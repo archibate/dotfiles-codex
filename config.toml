@@ -1,0 +1,40 @@
+personality = "pragmatic"
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+plan_mode_reasoning_effort = "high"
+
+[projects."/home/ubuntu/Projects/cpp/MDD3"]
+trust_level = "trusted"
+
+[projects."/home/ubuntu/open_learn"]
+trust_level = "trusted"
+
+[projects."/home/ubuntu/archibate-skills"]
+trust_level = "trusted"
+
+[projects."/home/ubuntu/.claude"]
+trust_level = "trusted"
+
+[projects."/home/ubuntu/.codex"]
+trust_level = "trusted"
+
+[notice.model_migrations]
+"gpt-5.2-codex" = "gpt-5.4"
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[model_providers.evolink]
+name = "EvoLink API"
+base_url = "https://direct.evolink.ai/v1"
+env_key = "EVOLINK_API_KEY"
+wire_api = "responses"
+
+[model_providers.aigcdesk]
+name = "AIGCDesk"
+base_url = "https://api.aigcdesk.com/v1"
+env_key = "AIGCDESK_API_KEY"
+wire_api = "responses"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
