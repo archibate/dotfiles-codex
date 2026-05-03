@@ -21,6 +21,9 @@ trust_level = "trusted"
 [projects."/home/bate"]
 trust_level = "trusted"
 
+[projects."/home/bate/.claude"]
+trust_level = "trusted"
+
 [notice.model_migrations]
 "gpt-5.2-codex" = "gpt-5.4"
 

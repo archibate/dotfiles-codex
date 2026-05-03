@@ -1,6 +1,9 @@
 ---
 name: show-image
 description: Show images in terminal using the Kitty image protocol. TRIGGER when show/view images in terminal, display plot results, or after saving any plot or image file to disk.
+disable-model-invocation: true
+allowed-tools:
+  - Bash(*show_image*:*)
 ---
 
 # Showing Image in Kitty Terminal
@@ -48,7 +51,7 @@ Assume user have installed and using Kitty with remote control enabled. If they 
 
 ### Why Split Pane?
 
-You are a CLI assistant running in a rich TUI. If we show image data directly in your running pane, the TUI can be severely interfered with. Creating a new pane only for display prevents that.
+You are a CLI assistant running in a TUI tool like Claude Code, which have rich TUI interface. If we show image directly in your running pane, the Claude Code TUI you live in would be severely interfered. Creating a new pane only for display prevents TUI being screwed up.
 
 ## Constrains
 

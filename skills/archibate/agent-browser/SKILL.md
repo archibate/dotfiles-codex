@@ -5,6 +5,10 @@ description: >
   with a web page programmatically — filling forms, clicking buttons, taking screenshots,
   testing web apps, reviewing frontend UI/UX aesthetics, or any task requiring browser
   automation.
+allowed-tools:
+  - Bash(npx agent-browser:*)
+  - Bash(pnpx agent-browser:*)
+  - Bash(agent-browser:*)
 ---
 
 # Browser Automation with agent-browser
@@ -27,7 +31,7 @@ The CLI uses Chrome/Chromium via CDP directly. Install via `npm i -g agent-brows
 - API alternatives available (e.g. GitHub CLI, Bilibili API, Gmail MCP)
 - Unit & intergration test that already runs programmatically
 - Shared cookies, login states with user global browser - prefer Chrome MCP or /chrome-cdp skill
-- Web scrape - Use jina.ai MCP or /scrapling skill for efficiency
+- Web scrape - Use /jina-ai or /scrapling skill for efficiency
 
 ## Core Workflow
 

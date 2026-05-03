@@ -1,6 +1,7 @@
 ---
 name: joke
 description: Fetch a random joke from jokeapi.dev. Use whenever the user asks for a joke, wants to be cheered up, asks to hear something funny, or requests a category-specific joke like "tell me a programming joke" or "give me a pun". Not for writing original jokes from scratch — this pulls from the public joke corpus.
+disable-model-invocation: true
 ---
 
 # Joke

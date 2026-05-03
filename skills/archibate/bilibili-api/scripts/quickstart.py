@@ -9,7 +9,7 @@ bilibili-api Quickstart Example
 Demonstrates basic video info retrieval using both async and sync patterns.
 
 Usage:
-    scripts/quickstart.py
+    ${CLAUDE_PLUGIN_ROOT}/scripts/quickstart.py
 """
 
 import asyncio

@@ -1,6 +1,9 @@
 ---
 name: duckduckgo
 description: Web search and content scraping via DuckDuckGo. Use this as a fallback to other web tools.
+disable-model-invocation: true
+allowed-tools:
+  - Bash(npx -y mcporter*:*)
 ---
 
 # DuckDuckGo Search

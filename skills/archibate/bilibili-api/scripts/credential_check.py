@@ -12,7 +12,7 @@ Usage:
     export BILI_SESSDATA="your_sessdata"
     export BILI_JCT="your_bili_jct"
     export BILI_BUVID3="your_buvid3"
-    scripts/credential_check.py
+    ${CLAUDE_PLUGIN_ROOT}/scripts/credential_check.py
 """
 
 import os
