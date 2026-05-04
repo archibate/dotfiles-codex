@@ -1,5 +1,5 @@
-personality = "pragmatic"
-model = "gpt-5.5"
+personality = "friendly"
+model = "gpt-5.4-mini"
 model_reasoning_effort = "high"
 plan_mode_reasoning_effort = "high"
 
@@ -22,6 +22,15 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/bate/.claude"]
+trust_level = "trusted"
+
+[projects."/home/bate/.codex"]
+trust_level = "trusted"
+
+[projects."/home/bate"]
+trust_level = "trusted"
+
+[projects."/home/bate/claudy_workspace"]
 trust_level = "trusted"
 
 [notice.model_migrations]
