@@ -2,10 +2,9 @@
 name: review
 description: >
   Review code for bugs, AI slop patterns, or documentation issues, then fix
-  them interactively. This skill should be used after completing a major code
-  modification or large multi-file edits — or when the user says "review",
-  "review changes", "any bugs?", "review AI slop", "clean up AI code",
-  "review docs", "code review".
+  them interactively. Use after a major code modification or large multi-file
+  edits, or when the user says "review", "any bugs?", "clean up AI code",
+  "review docs", "code review", "review AI slop".
 allowed-tools:
   - Read
   - Grep

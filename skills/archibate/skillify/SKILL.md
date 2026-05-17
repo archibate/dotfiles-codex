@@ -14,6 +14,7 @@ allowed-tools:
   - Bash(mkdir:*)
 argument-hint: "[description of the process you want to capture]"
 compatibility: Claude Code
+disable-model-invocation: true
 ---
 
 # Skillify

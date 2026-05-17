@@ -2,10 +2,8 @@
 name: repo-cache
 description: >
   Clone or reuse a cached local checkout of a remote git repo (GitHub/GitLab/Bitbucket).
-  This skill should be used when the user provides a repo URL or owner/repo identifier
-  (e.g. "facebook/react"), says "clone this repo", "read the source", "look at their
-  implementation", "study this project", or needs to browse or search across a remote
-  codebase.
+  Use when the user gives a repo URL or `owner/repo` identifier (e.g. "facebook/react"),
+  says "clone this repo" / "read the source", or needs to browse a remote codebase.
 ---
 
 Use this skill when the user points you to a remote git repository (GitHub/GitLab/Bitbucket URLs, `git@...`, or `owner/repo` shorthand).

@@ -1,9 +1,7 @@
 ---
 name: better-translate
 description: >
-  Produce natural Chinese translations free of translationese. This skill should be used
-  before writing or polishing any Chinese translation of English content — including when
-  the user says "translate to Chinese", "翻译", "翻译成中文".
+  Translate English into Chinese in natural human voice. Use before writing or polishing any Chinese translation of English content.
 ---
 
 # English-to-Chinese Translation

@@ -6,6 +6,7 @@ description: >
   multi-line patterns, or filtering by syntactic role (call vs. import vs. definition).
   Also TRIGGER when renaming a symbol across call sites + definitions, finding all
   callers of a method on a specific type, matching code shapes, or writing codemods.
+disable-model-invocation: true
 ---
 
 # ast-grep Code Search

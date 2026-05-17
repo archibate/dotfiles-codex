@@ -1,6 +1,6 @@
 ---
 name: chrome-cdp
-description: Interact with local Chrome browser session (only on explicit user approval after being asked to inspect, debug, or interact with a page open in Chrome)
+description: Connect to user's local Chrome session. Inspect and interact with web pages in a headful browser shared with user cookies and login states — navigate pages, click buttons, take screenshots, test web apps in headful Chrome the user could see in real-time. Use for headful browser automation. This skill should be used when user says "use my browser", "open this page", "in my Chrome", "fill the form", "test in real browser", "show in browser", "my login account". Request explicit user approval before use.
 ---
 
 # Chrome CDP
@@ -11,7 +11,9 @@ Lightweight Chrome DevTools Protocol CLI. Connects directly via WebSocket — no
 
 MUST explicitly ask for user permission before use. Chrome CDP runs in a **headful browser** in user screen. Start using Chrome CDP without user confirmation is **offensive**. User refuse: PAUSE IMMEDIATELY.
 
-Use /agent-browser skill instead if you need headless access to web pages.
+The headful browser will be the Chrome that user uses everyday with cookies and login states. Social media interactions requires user confirm.
+
+Use /agent-browser skill instead if you need stateless and headless access to web pages.
 
 ## Prerequisites
 
@@ -80,4 +82,4 @@ CSS px = screenshot image px / DPR
 
 - Prefer `snap --compact` over `html` for page structure.
 - Use `type` (not eval) to enter text in cross-origin iframes — `click`/`clickxy` to focus first, then `type`.
-- Chrome shows an "Allow debugging" modal once per tab on first access. A background daemon keeps the session alive so subsequent commands need no further approval. Daemons auto-exit after 20 minutes of inactivity.
+- Chrome shows an "Allow debugging" modal **once per hub lifetime** (not per command, not per tab). A single background hub holds one WebSocket to Chrome; every command — `list`, `open`, and per-tab ops — routes through it. The hub auto-exits after 8 hours of inactivity or when Chrome disconnects. `stop <target>` detaches one tab's session; `stop` with no args ends the hub.

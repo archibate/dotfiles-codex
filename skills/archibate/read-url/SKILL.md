@@ -1,11 +1,7 @@
 ---
 name: read-url
 description: >
-  Extract clean, complete text content (markdown) from any web page. Use this
-  when reading articles, docs, GitHub READMEs, blog posts, social posts, or
-  papers, or when the user says "read this page", "what does this link say",
-  provides a URL to read, curl returns noisy HTML, or WebFetch returns
-  truncated, summarized, or refused results.
+  Extract clean, complete markdown from any web page — articles, docs, READMEs, blog/social posts, academic papers. Also use as a fallback when curl returns noisy HTML or WebFetch returns truncated, summarized, or refused results.
 allowed-tools:
   - Bash(npx defuddle*:*)
   - Bash(pnpx defuddle*:*)

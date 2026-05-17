@@ -1,7 +1,8 @@
 ---
 name: code-quality-metrics
-description: This skill should be used when measuring code quality quantitatively — cyclomatic complexity, cognitive complexity, maintainability index, code coverage — or when evaluating whether code meets quality thresholds.
+description: Measure code quality quantitatively — cyclomatic complexity, cognitive complexity, maintainability index. Use when evaluating whether code meets quality thresholds.
 version: 0.1.0
+disable-model-invocation: true
 ---
 
 # Code Quality Metrics Guide

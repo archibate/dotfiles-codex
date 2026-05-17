@@ -2,11 +2,11 @@
 name: deslop
 description: >
   Rewrite an AI-generated article to remove AI slop patterns — emoji infestation,
-  marketing hyperbole, forced numbered groupings, table fetish, sanitized
-  honesty, lost specificity, and boilerplate scaffolding. Use when the user says
-  "deslop", "rid the slop", "clean up this AI article", "remove AI slop",
-  "depollute", "make this sound less AI", or hands over text that reads as
-  obvious LLM output and wants a human-voice rewrite. Works on any language.
+  marketing hyperbole, forced numbered groupings, table fetish, sanitized honesty,
+  lost specificity, and boilerplate scaffolding. Restores a human voice.
+  Use when the user says "deslop", "rid the slop", "clean up this AI article",
+  "remove AI slop", "depollute", or "make this sound less AI".
+disable-model-invocation: true
 ---
 
 # Deslop — Strip AI Slop From an Article
@@ -16,6 +16,15 @@ Rewrite an AI-generated article into prose that a human author would actually pu
 ## Overview
 
 LLMs default to a recognizable "slop register": emoji-stuffed headers, marketing buzzwords, forced trichotomies, tables for everything, sanitized opinions, and template sections that repeat across the whole document. Readers detect this within seconds and discount the content. This skill applies a fixed checklist to identify those patterns, then rewrites them while preserving the underlying facts and structure the author actually needs.
+
+### Two layers of slop
+
+Slop is not one thing. It comes in two layers, and they are removed by different means:
+
+1. **Surface slop** — emoji, marketing hyperbole ("革命/降维打击/封神"), philosophy tics ("归根结底/本质是/说白了"), Chinese-English code-mixing. Models *recognize* these as slop. A simple "rewrite in a human voice" prompt removes them reliably across all voice variants.
+2. **Structural slop** — markdown headers, numbered sections (一/二/三 or 1/2/3), two-column tables for trivial pairs, 总-分-总 closures, "三大优势/四大要点" forced groupings, tacked-on "总结" paragraphs. Models do NOT recognize these as slop — they treat them as "good organization" or "professional formatting". Voice prompts leave structural slop intact, and may even *reinforce* it: when asked to rewrite a sloppy article in a human voice without further constraints, the model typically expands rather than condenses, adding more sections and headers along the way.
+
+This split is why the skill cannot collapse into a single voice instruction. Removing surface slop is the easy half — any tone prompt does it. Removing structural slop requires explicit constraint: drop headers, drop numbered groupings, default to prose, justify every table, refuse to add a closing summary the original didn't have. The 4-phase workflow and the checklist below operationalize that. When in a hurry and the workflow is too heavy, the minimum viable prompt is "rewrite in a human voice + no markdown headers, no numbered sections, no tables, no closing summary, ≤N words" — but that is the floor, not the ceiling, of what this skill should produce.
 
 ## When to Use
 
@@ -112,6 +121,14 @@ These are the verbal mannerisms LLMs reach for when they want to sound punchy or
 - **"最后那个 / 最后这个 X" callback opener** — referring back to a prior item with "最后那个" / "刚才说的那个" before adding commentary. Reads like a podcaster filling time. Either name the thing directly or restructure so the callback isn't needed.
 - **"关键在于 xx" tail emphasis** — sentence appended at the end of a paragraph or article to "drive the point home", usually paraphrasing what was just said. The model adds it to feel conclusive. Delete unless "关键在于" actually introduces a new constraint or insight.
 - **Forced analogy avalanche** — "这就好比博尔特来你生日派对" / "就像把法拉利开进胡同里" / "好比 X 干 Y" piled on without adding clarity. One vivid analogy lands; three in a row reads as the model performing wit. Keep the single best analogy, delete the rest, or just state the technical point directly.
+- **Single-character verb / subject preference** — Chinese LLM writing reaches for one-character verbs to feel punchy where humans would naturally use the two-character form: 扔 / 拷 / 开 / 弄 / dm vs 丢弃 / 复制 / 启用 / 处理 / 发消息. Same with one-character subjects: `人在输入框里` reads abrupt where `人类在输入框里` reads natural. Rule: prefer the two-character version unless the one-character form is the established jargon (e.g. `跑` a process, `调` an API). Imperative verbs immediately preceding a config name — `开 ControlMaster` — may stay one character because the next noun supplies the context.
+- **Em-dash followed by an explanation / punchline / consequence** — `X 是 Y 的——Z`、`X 别忽略——Y`、`这套门是 best-effort 不是事务——TOCTOU`. The em-dash isn't a real interruption; the model uses it to land a sharp clarification or "actually" reveal. Replace with a colon (when a definition follows), a period (next sentence), or rewrite so the load-bearing fact comes first. Reserve `——` for genuine parenthetical thoughts that interrupt the main clause, or for surrounding quoted dialogue.
+- **"一个直接后果是 / 一个直接受益是 / 一个意外的副作用是" formula opener** — slot-and-fill connector the model uses to introduce an example or consequence. Reads scaffolded. Either delete the opener and state the consequence directly, or rewrite as "这导致 X" / "这意味着 X" / "由此 X" with a proper causal link only when the link is real.
+- **Inverted goal-first + tail-suffix structure** — Chinese-flavored slop where the goal or condition comes first and the method comes second, capped with `就行 / 就够了 / 就有了`: `要离开本机，把单文件 bundle rsync 到远端就行` / `想本地追溯，自己包一层 shell 函数 tee 一份就行`. The forward order reads more direct: subject + action + result. Rewrite as `把 claude-dm 打包成单文件 portable-claude-dm 即可操控远端 Claude` — action first, then result via `即可` (used as a forward connector, not a tail suffix). Heuristic: if the sentence starts with `要 / 想 / 如需` and ends with `就行 / 就够了 / 就有了`, front the action.
+- **Verb-as-spine sentence default** — every sentence built around a strong action verb when state-description would be more natural: `工作机制可以拆成两半` vs `工作机制由两部分组成`; `把状态压缩成 5 个` vs `采用 5 个状态`. The verb-driven version makes the writer sound like they're performing on the content rather than describing it. Mix in `由 X 组成 / 是 X / 包含 X / 属于 X / 由 X 构成` to vary the rhythm. If the technical reality is static (a structure, a relationship, a category), describe the state instead of dramatizing it as an action.
+- **Triple-negation parallel** — `没有守护进程、没有注册中心、没有数据库` / `无 X、无 Y、无 Z` / `no daemon, no registry, no database`. The triple repetition turns a single property (lightweight, dependency-free) into a chant-like rhetorical device. Collapse to one statement: `不依赖守护进程、注册中心或数据库`. Reserve the triple-repeat form for genuinely climactic emphasis the author would actually use.
+- **"一句话：X" / "简单来说：X" / "总之，X" totalizing opener** — putting `一句话：` / `简单来说：` / `总之，` / `归纳一下：` at the head of a sentence to introduce a restated definition. The opener performs "here comes the one-liner" without adding information, and the line that follows is usually a paraphrase of what the surrounding prose already conveyed. Drop the opener and let the line stand on its own. If the surrounding paragraphs already define the thing, drop both the opener and the line. Distinct from the term-colon "X：Y 的最佳体现" pattern: this one starts the sentence with a meta-marker word.
+- **Translationese / literal English calques** — Chinese phrasings that read like word-for-word translations from English: `字面的`, `给定 X 的情况下`, `所谓的 X` when not signalling irony, `让我们 X` in non-tutorial prose, `在某种意义上`, `值得一提的是`. The model defaults to these because they map directly from English idioms it has more training on. Replace with native Chinese: `字面 → 直接 / 直观`, `给定 X 的情况下 → 假设 X / 在 X 下`, `所谓的 → drop`, `让我们 → drop or 我们`, `在某种意义上 → 某种程度上 / drop`.
 
 ### Phase 3: Rewrite
 
@@ -186,6 +203,14 @@ If any answer is unsatisfactory, do another pass. Then deliver.
 | Final tacked-on "关键在于 / 所以 / 归根结底" line | Templated closing | Delete unless it advances new claim |
 | "要么 X，要么 Y，要么 Z" stacked disjunction | Forced trilemma | Plain sentence; reserve for real mutual exclusivity |
 | "三条路都是 X，没有第四条 / 仅此而已" | Manufactured exhaustive closure | Delete unless exhaustiveness is actually argued |
+| "扔 / 拷 / 开" 单字动词、"人" 单字主语 | Punchy single-char tic | Use two-char form (放到 / 复制 / 启用 / 发消息 / 人类) unless established jargon |
+| `——` after main clause adding clarification / punchline | Em-dash punchline | Use colon, period, or front the load-bearing fact |
+| "一个直接后果是 / 一个直接受益是" formula opener | Scaffolded connector | Delete or rewrite as natural causal link (这导致 / 这意味着) |
+| "要 X，把 Y 干 Z 就行 / 就够了 / 就有了" inverted goal-first | Inverted structure with tail suffix | Front the action; `即可` as forward connector is fine |
+| "拆成两半 / 压缩成 5 个" verb-spine where state would do | Action-dramatized state | Use 由...组成 / 采用 / 包含 / 属于 |
+| "没有 X、没有 Y、没有 Z" triple negation parallel | Chant-like repetition | Collapse to "不依赖 X、Y 或 Z" |
+| "一句话：X / 简单来说：X / 总之，X" opener | "Here comes the one-liner" pose | Drop opener; let the line stand or remove if redundant |
+| "字面的 / 给定 X 的情况下 / 让我们 X" calques | Translationese | Replace with native phrasing or drop |
 
 ## Notes
 

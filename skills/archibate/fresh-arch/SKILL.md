@@ -1,6 +1,6 @@
 ---
 name: fresh-arch
-description: Architecture design reasoned forward from requirements. Existing code is evidence to critique, never a starting point, backward-compat constraint, or pattern to inherit. Use when the user wants a fresh-mind design pass — "design an architecture for", "how would you build", "redesign from scratch" — or explicit /fresh-arch invocation.
+description: Architecture design reasoned forward from requirements. Use when the user wants a fresh-mind design pass — "design an architecture for", "how would you build", "redesign from scratch".
 argument-hint: "[plan or topic to design architecture on]"
 ---
 

@@ -1,0 +1,144 @@
+# shellcheck shell=bash
+# Peer state classification. Pane-visible state drives the top-level state;
+# transcript is consulted as an authority check and for modal subtype.
+
+# Capture the peer's pane with ANSI escapes preserved, then strip ghost
+# placeholder text (Claude Code renders the autocomplete suggestion with the
+# first letter in reverse video and the rest dim) and remaining color codes.
+# Without this step the suggestion bytes look like a real user draft and trip
+# the drafting gate. Echoes the cleaned tail.
+_capture_clean_tail() {
+  local target="$1" body
+  body=$(tm capture-pane -p -J -e -t "$target" 2>/dev/null) || return 1
+  body=$(tail -n 15 <<<"$body")
+  # Strip reverse-video-bounded placeholder (\e[7m … \e[0m). The current UI
+  # renders the first character of the suggestion in reverse video and the
+  # rest in reset+dim (\e[0;2m), closed by a single \e[0m that tmux often
+  # emits at the start of the next captured row. -0777 /s lets the non-greedy
+  # match span the row boundary; capture the trailing newline (if consumed)
+  # and reinsert it so the prompt row stays separate from the bottom rule.
+  body=$(printf '%s' "$body" | perl -0777 -pe 's/\e\[7m.*?(\n?)\e\[0m/$1/gs')
+  # Strip remaining bare dim segments (\e[2m … \e[Nm) for legacy / fallback
+  # placeholder shapes that don't include a reverse-video leader.
+  body=$(printf '%s' "$body" | perl -0777 -pe 's/\e\[2m[^\e]*\e\[[0-9;]*m//g')
+  # Strip remaining SGR codes so box-rule detection sees plain `─` lines.
+  body=$(printf '%s' "$body" | perl -0777 -pe 's/\e\[[0-9;]*m//g')
+  # Claude Code pads the input line with NBSP (U+00A0); normalize to ASCII space.
+  body=$(sed $'s/\xc2\xa0/ /g' <<<"$body")
+  printf '%s' "$body"
+}
+
+# Returns one of: idle | busy | drafting | modal | other (on stdout).
+peer_state() {
+  local target="$1"
+  local title; title=$(target_title "$target")
+  case "$title" in
+    '✳'*) ;;
+    *)    printf 'busy\n'; return 0 ;;
+  esac
+
+  local body
+  body=$(_capture_clean_tail "$target") || { printf 'other\n'; return 0; }
+
+  grep -qP '^─{10,}$' <<<"$body" || { printf 'other\n'; return 0; }
+  grep -qP '^❯ '      <<<"$body" || { printf 'other\n'; return 0; }
+
+  # Box is bounded above by the top ─ rule and below by either a second ─
+  # rule (legacy UI) OR the status line carrying `[N%]` (current UI no longer
+  # draws a closing rule below the input). Without the status-line guard the
+  # awk falls through to EOF and slurps status + hint lines into the draft.
+  local box draft menu_lines
+  box=$(awk '
+    /^─{10,}$/                  { if (inside) exit; inside=1; next }
+    inside && /\[[0-9]+%\]/     { exit }
+    inside                      { print }
+  ' <<<"$body")
+  # Strip prompt glyph, whitespace, and ─ (current UI fills the empty input
+  # row with ─ as a field underline — visually a placeholder, not content).
+  draft=$(tr -d '❯─ \t\n' <<<"$box")
+  if [[ -z "$draft" ]]; then
+    printf 'idle\n'; return 0
+  fi
+
+  # Non-empty box: a menu (2+ numbered options) indicates a modal; otherwise a draft.
+  menu_lines=$(grep -cE '^[[:space:]❯]*[0-9]+[.)]' <<<"$box" || true)
+  if (( menu_lines >= 2 )); then
+    printf 'modal\n'
+  else
+    printf 'drafting\n'
+  fi
+}
+
+# When state is `modal`, return its subtype by looking at the peer's most recent
+# unmatched tool_use in the transcript: permission | question | other.
+modal_subtype() {
+  local target="$1" tr name
+  tr=$(target_transcript "$target") || { printf 'other\n'; return 0; }
+  name=$(tac "$tr" \
+    | jq -rc 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use") | .name' \
+    | head -n 1)
+  case "$name" in
+    AskUserQuestion)              printf 'question\n'   ;;
+    Bash|Edit|Write|NotebookEdit) printf 'permission\n' ;;
+    '')                           printf 'other\n'      ;;
+    *)                            printf 'permission\n' ;;
+  esac
+}
+
+# Transcript sanity check: reject only if the most recent assistant turn has a
+# non-terminal stop_reason (e.g. tool_use pending result). Pane state is the
+# authoritative liveness signal; this catches the narrow mid-tool case where
+# the UI might briefly show idle while the transcript says a tool is in flight.
+# User-only tails (fresh / interrupted sessions) and no-transcript cases pass.
+check_transcript_end_turn() {
+  local tr
+  tr=$(target_transcript "$1") || return 0
+  local last_type last_stop
+  read -r last_type last_stop < <(tac "$tr" \
+    | jq -rc 'select(.type=="assistant" or .type=="user") | "\(.type) \(.message.stop_reason // "")"' \
+    | head -n 1) || true
+  if [[ "$last_type" == "assistant" && "$last_stop" != "end_turn" && -n "$last_stop" ]]; then
+    printf 'last assistant turn stop=%s\n' "$last_stop"
+    return 1
+  fi
+  return 0
+}
+
+# Classify the input box without checking pane title. For self-DM the title is
+# always busy (the agent is mid-turn), but the box still tells us whether the
+# user has queued a draft or a modal is open. Returns: empty | drafting | modal
+# | unknown.
+#
+# Differs from peer_state's box extraction: matches rules that *start* with
+# 10+ ─ chars rather than requiring the whole line, so that titled rules
+# (e.g. `──── working-dir ────`) count as box delimiters. Without this, the
+# top rule misses, awk only sees the bottom rule, and slurps the status line
+# below it as if it were a draft.
+peer_box_state() {
+  local target="$1" body box draft menu_lines
+  body=$(_capture_clean_tail "$target") || { printf 'unknown\n'; return 0; }
+
+  grep -qP '^─{10,}' <<<"$body" || { printf 'unknown\n'; return 0; }
+  grep -qP '^❯ '     <<<"$body" || { printf 'unknown\n'; return 0; }
+
+  # Same status-line bound as peer_state — current UI omits the closing rule.
+  box=$(awk '
+    /^─{10,}/                   { if (inside) exit; inside=1; next }
+    inside && /\[[0-9]+%\]/     { exit }
+    inside                      { print }
+  ' <<<"$body")
+  draft=$(tr -d '❯─ \t\n' <<<"$box")
+  if [[ -z "$draft" ]]; then printf 'empty\n'; return 0; fi
+  menu_lines=$(grep -cE '^[[:space:]❯]*[0-9]+[.)]' <<<"$box" || true)
+  if (( menu_lines >= 2 )); then printf 'modal\n'; else printf 'drafting\n'; fi
+}
+
+# True iff state is idle AND transcript confirms end_turn. Prints reason on stderr.
+safe_to_dm() {
+  local target="$1" state reason
+  state=$(peer_state "$target")
+  if [[ "$state" != "idle" ]]; then
+    printf 'state=%s\n' "$state" >&2; return 1
+  fi
+  reason=$(check_transcript_end_turn "$target") || { printf 'transcript %s\n' "$reason" >&2; return 1; }
+}

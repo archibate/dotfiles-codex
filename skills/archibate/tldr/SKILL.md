@@ -1,9 +1,11 @@
 ---
 name: tldr
-description: Append a one-line summary to a long prior response so the user can fast-read the verdict. Use after outputing a final text response >=10 lines.
+description: Append a one-line TLDR summary to the prior response. User-invoked via /tldr only.
+disable-model-invocation: true
+user-invocable: true
 ---
 
-After a final text response >=10 lines, append exactly one line as a TLDR summary for the user to fast-read the verdict.
+Append exactly one line as a TLDR summary of the prior response for the user to fast-read the verdict.
 
 Format strictly:
   📌 <verdict in under 20 words>

@@ -1,7 +1,7 @@
 ---
 name: context7
 description: >
-  Fetch authoritative, current, version-specific documentation for libraries, SDKs, APIs, and CLI tools via Context7. MUST TRIGGER before writing or editing any non-stdlib library call — including well-known libraries you think you know, since your prior knowledge may be stale. SKIP for internal/private libraries, stdlib code, raw HTTP/filesystem, shell built-ins, or stable primitives whose signatures haven't changed in years (e.g. `json.dumps`, `os.path`). Prefer this over web search for library docs.
+  Fetch current docs and code examples for third-party libraries, SDKs, APIs, and CLI tools via Context7. Use before writing or editing non-stdlib library calls — your prior knowledge may be stale. Prefer over web search for library docs.
 allowed-tools:
   - Bash(*mcpcall.py*:*)
 ---
@@ -9,6 +9,10 @@ allowed-tools:
 # Context7
 
 Fetch up-to-date library documentation and code examples. Requires `CONTEXT7_API_KEY` environment variable.
+
+## When not to use
+
+Skip Context7 for internal/private libraries, stdlib code, raw HTTP/filesystem, shell built-ins, or stable primitives whose signatures haven't changed in years (e.g. `json.dumps`, `os.path`).
 
 ## resolve-library-id
 

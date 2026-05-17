@@ -6,6 +6,7 @@ description: >
   design decisions without fetching full repository.
 allowed-tools:
   - Bash(*mcpcall.py*:*)
+disable-model-invocation: true
 ---
 
 # DeepWiki

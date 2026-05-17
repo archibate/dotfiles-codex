@@ -13,6 +13,7 @@ when_to_use: >
   or resource usage. Trigger phrases: "check system", "system status",
   "syscheck", "check CPU", "check memory", "check disk",
   "is the system OK?", "system health".
+disable-model-invocation: true
 ---
 
 # System Monitor

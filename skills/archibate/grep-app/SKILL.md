@@ -1,7 +1,7 @@
 ---
 name: grep-app
 description: >
-  Code search across millions of public GitHub repositories via grep.app. This skill should be used before writing or planning code. Use it to get real-world usage examples of libraries, frameworks, APIs, algorithms, or syntax patterns; to verify idiomatic usage; to find production patterns; or to explore how others solved similar problems. Prefer this over web search for code examples.
+  Code search across millions of public GitHub repositories via grep.app. Use before writing or planning code to find real-world usage of libraries, frameworks, APIs, algorithms, or syntax patterns. Prefer this over web search for code examples.
 allowed-tools:
   - Bash(*mcpcall.py*:*)
 ---

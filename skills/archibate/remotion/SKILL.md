@@ -1,9 +1,8 @@
 ---
 name: remotion
 description: >
-  Documentation for Remotion — video creation in React. This skill should be used when
-  the user mentions "remotion", "video composition", "create animation", "create video",
-  or before working with Remotion code or React-based video generation.
+  Documentation for Remotion — video creation in React. Use before working with
+  Remotion code or when the user says "remotion", "video composition", "create animation".
 metadata:
   tags: remotion, video, react, animation, composition
 ---

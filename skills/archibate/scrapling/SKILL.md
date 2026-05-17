@@ -1,11 +1,9 @@
 ---
 name: scrapling
 description: >
-  Scrape web pages using Scrapling with anti-bot bypass (like Cloudflare Turnstile), stealth
-  headless browsing, spiders framework, adaptive scraping, and JavaScript rendering. This
-  skill should be used when needing to scrape, crawl, or extract data from websites, write
-  Python scraping code, write spiders, or as a fallback when WebFetch fails due to anti-bot
-  protections or JavaScript rendering.
+  Scrape, crawl, or extract data from websites using Scrapling — anti-bot bypass
+  (Cloudflare Turnstile), stealth headless, spiders, adaptive scraping, JS rendering.
+  Also a fallback when WebFetch fails due to anti-bot protections or JS rendering.
 version: 0.4.2
 license: Complete terms in LICENSE.txt
 ---
